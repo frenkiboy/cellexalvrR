@@ -25,7 +25,7 @@ setMethod('as_cellexalvrR', signature = c ('environment'),
 	definition = function ( x, meta.cell.groups, meta.genes.groups = NULL, userGroups=NULL, outpath=getwd(), specie ) {
 	## x has to be a BioData object which is read as a simple list here!
 	ret = methods::new('cellexalvrR')
-	ret@data = x$data
+	ret@data = x$dat
 	#ret@data@x = log( exp( ret@data@x ) +1 ) ## fixed in BioData
 	
 	if ( ! is.null(meta.genes.groups) )
