@@ -170,3 +170,4 @@ expect_true(file.exists( scriptfile)) ## server is down
 
 file.remove( scriptfile )
 
+lapply( list.files( pattern="*.Rout"), unlink )

@@ -3,7 +3,7 @@
 \docType{methods}
 \name{MakeCellexaVRObj}
 \alias{MakeCellexaVRObj}
-\alias{MakeCellexaVRObj,matrix-method}
+\alias{MakeCellexaVRObj,dgCMatrix-method}
 \title{Create a cellexalvrR object from a matrix object.}
 \arguments{
 \item{exdata}{A matrix of expression values (required). Colnames are cell IDs, rownames are unique gene names}

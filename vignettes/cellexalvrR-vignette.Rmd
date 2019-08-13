@@ -59,17 +59,17 @@ if ( ! file.exists("log2data.RData") ) {
    save( cell.ids, file="cell.ids.RData")
    rm(cell.ids)
    
-   diff.proj = cellexalObj@drc$diffusion
+   diff.proj = cellexalObj@drc$graph1
    save( diff.proj, file="diff.proj.RData")
    rm( diff.proj )
    
-   ddr.proj = cellexalObj@drc$DDRtree
+   ddr.proj = cellexalObj@drc$graph2
    save( ddr.proj, file="ddr.proj.RData" )
    rm(ddr.proj)
    
-   tsne.proj = cellexalObj@drc$tSNE
-   save( tsne.proj, file="tsne.proj.RData")
-   rm(tsne.proj)
+   #tsne.proj = cellexalObj@drc$tSNE
+   #save( tsne.proj, file="tsne.proj.RData")
+   #rm(tsne.proj)
    
 }
 ```
@@ -82,7 +82,7 @@ load("facs.RData")
 load("cell.ids.RData")
 load("diff.proj.RData")
 load("ddr.proj.RData")
-load("tsne.proj.RData")
+#load("tsne.proj.RData")
 ```
 
 `log2data` is a matrix of highly variable genes in log2 form. The first 10 columns and 10 rows look as so:
@@ -119,13 +119,15 @@ head(diff.proj)
 The first step is to put all the dimension reduction outputs into a single list:
 
 ```{r, fig.show='hold',eval=T}
-proj.list <- list(diffusion=diff.proj,DDRtree=ddr.proj,tSNE=tsne.proj)
+#proj.list <- list(diffusion=diff.proj,DDRtree=ddr.proj,tSNE=tsne.proj)
+proj.list <- list(diffusion=diff.proj,DDRtree=ddr.proj)
 ```
 
 The next is to make a `cellexalvr` object by calling `MakeCellexaVRObj` and passing the required objects to it:
 
 ```{r, fig.show='hold',eval=T}
-cellvr <- MakeCellexaVRObj( log2data, ,drc.list=proj.list,specie="mouse",cell.meta=cell.ids,facs.data=facs)
+dim(log2data)
+cellvr <- MakeCellexaVRObj( Matrix::Matrix(log2data, sparse=T), drc.list=proj.list, specie="mouse", cell.meta=cell.ids, facs.data=NULL)
 ```
 In the same step we also set the specie as mouse which ensures the correct 
 transcription factor IDs are using during network construction if implemented in CellexalVR.
@@ -153,7 +155,7 @@ While `MakeCellexaVRObj` is the most convenient way to make the object, sometime
 This is done calling `new`:
 
 ```{r,fig.show='hold',eval=T}
-cell.vr.scr <- new("cellexalvr",data=Matrix::Matrix(log2data,sparse=T),drc=list(tsne=tsne.proj))
+cell.vr.scr <- new("cellexalvrR",data=Matrix::Matrix(log2data,sparse=T),drc=list(diff=diff.proj))
 cell.vr.scr
 ```
 
@@ -173,7 +175,8 @@ cell.vr.scr
 
 To add FACS for each cell use `addFACS2cellexalvr`:
 ```{r,fig.show='hold',eval=T}
-cell.vr.scr <- addFACS2cellexalvr(cell.vr.scr,facs)
+# unfortunatelky broken at the moment
+#cell.vr.scr <- addFACS2cellexalvr(cell.vr.scr,facs)
 ```
 
 Setting the specie is done using the `set.specie` function:

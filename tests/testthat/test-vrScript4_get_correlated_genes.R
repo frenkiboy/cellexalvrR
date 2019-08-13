@@ -1,3 +1,5 @@
+skip('depricated')
+
 context('VR get correlated genes')
 
 if ( is.na( match('cellexalvrR',rownames(installed.packages()))) ) {

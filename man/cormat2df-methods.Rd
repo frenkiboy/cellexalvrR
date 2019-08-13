@@ -3,7 +3,7 @@
 \docType{methods}
 \name{cormat2df}
 \alias{cormat2df}
-\alias{cormat2df,cellexalvrR-method}
+\alias{cormat2df,matrix-method}
 \title{description of function cormat2df}
 \arguments{
 \item{cors}{A square matrix of pairwise measures}

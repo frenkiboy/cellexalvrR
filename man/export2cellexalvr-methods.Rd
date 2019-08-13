@@ -29,6 +29,6 @@ for the CellexalVR application to show this data.
 Consult the CellexalVR documentation for further path requrements.
 }
 \examples{
-dir.create ('data')
-export2cellexalvr(cellexalObj, path='data')
+\dontrun{dir.create ('data')}
+\dontrun{export2cellexalvr(cellexalObj, path='data')}
 }

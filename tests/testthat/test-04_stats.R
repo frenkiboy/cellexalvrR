@@ -34,9 +34,9 @@ gene2 = getDifferentials(x, grouping, 'wilcox', num.sig=100, Log=FALSE, logfc.th
 
 expect_true( length( gene2) == 100, paste("wrong gene number c++ wilcox", length( gene2) ) )
 
-gene3 = getDifferentials(x, grouping, 'Seurat_wilcox', num.sig=100, logfc.threshold = .1, minPct=0.1 )
+#gene3 = getDifferentials(x, grouping, 'Seurat_wilcox', num.sig=100, logfc.threshold = .1, minPct=0.1 )
 
-expect_true( length( gene3) == 100, paste("wrong gene number seurat wilcox", length( gene3) ) )
+#expect_true( length( gene3) == 100, paste("wrong gene number seurat wilcox", length( gene3) ) )
 
 
 #test_that( 'MAST' ,{

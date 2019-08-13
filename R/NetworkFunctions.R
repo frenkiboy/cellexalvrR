@@ -1,5 +1,5 @@
 #' @name cormat2df
-#' @aliases cormat2df,cellexalvrR-method
+#' @aliases cormat2df,matrix-method
 #' @rdname cormat2df-methods
 #' @docType methods
 #' @description  Converts a pairwise correlation matrix for data.frame

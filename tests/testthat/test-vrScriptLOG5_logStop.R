@@ -1,3 +1,5 @@
+skip('depricated')
+
 context('VR stop logging' )
 
 if ( is.na( match('cellexalvrR',rownames(installed.packages()))) ) {

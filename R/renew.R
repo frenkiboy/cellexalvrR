@@ -26,15 +26,21 @@ setMethod('renew', signature = c ('cellexalvrR'),
 			if( isS4(x)) {
 				## OK no R6 then ;-)
 				ret = x
-				if ( ! .hasSlot( x, 'version') ) {
-					if ( .hasSlot( x, 'dat')) {
-							ret <- new("cellexalvrR",data=x@dat,drc=x@mds,meta.cell=x@meta.cell,meta.gene = x@meta.gene,  index = x@index)
+				if ( ! methods::.hasSlot( x, 'version') ) {
+					if ( methods::.hasSlot( x, 'dat')) {
+							ret <- methods::new("cellexalvrR",data=x@dat,drc=x@mds,meta.cell=x@meta.cell,
+								meta.gene = x@meta.gene,  index = x@index, outpath=x@outpath)
+						}else if( ! .hasSlot( x, 'drc')) {
+							ret <- methods::new("cellexalvrR",data=Matrix::Matrix(x@data, sparse=T),drc=x@mds,
+								meta.cell=x@meta.cell,meta.gene = x@meta.gene,  index = x@index, outpath=x@outpath)
 						}else {
-							ret <- new("cellexalvrR",data=Matrix(x@data, sparse=T),drc=x@mds,meta.cell=x@meta.cell,meta.gene = x@meta.gene,  index = x@index)
+							ret <- methods::new("cellexalvrR",data=Matrix::Matrix(x@data, sparse=T),drc=x@drc,
+								meta.cell=x@meta.cell,meta.gene = x@meta.gene,  index = x@index, outpath=x@outpath)
 						}
 					
-				}else if (x@version != as.character(packageVersion("cellexalvrR"))  ) { 
-					ret <- new("cellexalvrR",data=Matrix(x@data, sparse=T),drc=x@drc,meta.cell=x@meta.cell,meta.gene = x@meta.gene,  index = x@index)
+				}else if (x@version != as.character(utils::packageVersion("cellexalvrR"))  ) { 
+					ret <- new("cellexalvrR",data=Matrix(x@data, sparse=T),drc=x@drc,
+						meta.cell=x@meta.cell,meta.gene = x@meta.gene,  index = x@index, outpath=x@outpath)
 				}
 				#browser()
 				if( methods::.hasSlot(x,'userGroups') ){
@@ -54,7 +60,9 @@ setMethod('renew', signature = c ('cellexalvrR'),
 					x$index = matrix()
 				}
 
-				ret <- methods::new("cellexalvrR",data=Matrix(x$data, sparse=T),drc=x$mds,meta.cell=as.matrix(x$meta.cell),meta.gene = as.matrix(x$meta.gene),  index = x$index, specie= 'unset!')
+				ret <- methods::new("cellexalvrR",data=Matrix(x$data, sparse=T),
+					drc=x$mds,meta.cell=as.matrix(x$meta.cell),meta.gene = as.matrix(x$meta.gene),  
+					index = x$index, specie= 'unset!', outpath=x@outpath)
 				if( methods::.hasSlot(x,'userGroups') ){
 					ret$userGroups = x$userGroups
 				}
@@ -65,6 +73,9 @@ setMethod('renew', signature = c ('cellexalvrR'),
 
 					ret$usedObj = x$usedObj
 				}
+			}
+			if ( ! file.exists( x@outpath )) {
+				x@outpath = getwd()
 			}
 			## now lets add the inbuilt groupings...
 #			for ( name in c('TFs', 'epigenetic', 'CellCycle', 'CellSurface') ) {

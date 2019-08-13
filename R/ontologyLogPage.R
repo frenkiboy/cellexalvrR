@@ -23,7 +23,7 @@ setMethod('ontologyLogPage', signature = c ('cellexalvrR'),
 	definition = function ( cellexalObj, genes, grouping=NULL, ontology = 'BP', topNodes=10, ... ) {
 	## process the ontology for this gene list and add one ontology report page
 	#requireNamespace( 'AnnotationDbi' )
-	require( 'topGO' )
+	requireNamespace('topGO' )
 	
 	if ( file.exists(genes)) {
 		genes = as.vector(utils::read.delim(genes)[,1])

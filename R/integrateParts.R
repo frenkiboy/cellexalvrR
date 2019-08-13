@@ -79,7 +79,6 @@ setMethod('savePart', signature = c ('cellexalvrR'),
 			#meta.cell meta.gene userGroups usedObj
 			if ( is.null(path) )
 				path = x@outpath
-			
 			filename = partFname( part, path )
 			#print ( paste("I am saving parts file", filename ))
 			if (part == 'meta.cell') {#sample.RData

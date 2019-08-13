@@ -1,3 +1,5 @@
+skip('depricated')
+
 context('VR log heatmap 2')
 
 if ( is.na( match('cellexalvrR',rownames(installed.packages()))) ) {

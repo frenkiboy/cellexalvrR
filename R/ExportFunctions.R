@@ -21,8 +21,8 @@ if ( ! isGeneric('export2cellexalvr') ){setGeneric('export2cellexalvr', ## Name
 #' VR process needs the grouping names which will be exported if we get the correct path here
 #' @title create the VR data folder necessary for CellexalVR
 #' @examples
-#' dir.create ('data')
-#' export2cellexalvr(cellexalObj, path='data')
+#' \dontrun{dir.create ('data')}
+#' \dontrun{export2cellexalvr(cellexalObj, path='data')}
 #' @export export2cellexalvr
 setMethod('export2cellexalvr', signature = c ('cellexalvrR'),
 	definition = function (cellexalObj,path, forceDB=F, VRpath=NULL ) {

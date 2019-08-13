@@ -164,7 +164,7 @@ setMethod('getDifferentials', signature = c ('cellexalvrR'),
 			
 			### get the top genes
 			if ( deg.method != 'Linear' ) {
-				genes_list <- split( as.vector(all_markers[,'gene']), all_markers[,'cluster'] )
+				genes_list <- split( as.vector(all_markers[which(all_markers[,'logFC'] >0),'gene']), all_markers[which(all_markers[,'logFC'] >0),'cluster'] )
 				ret_genes =  ceiling(num.sig / length(table(grp.vec)))
 				
 				if ( ret_genes < 1)
@@ -180,7 +180,7 @@ setMethod('getDifferentials', signature = c ('cellexalvrR'),
 						x[1:ret_genes]
 					}
 				}
-				
+				#browser()
 				## likely not the best approach..
 				deg.genes = NULL
 				ret_genes = ret_genes -1

@@ -1,3 +1,5 @@
+skip('depricated')
+
 context('VR init session')
 
 if ( is.na( match('cellexalvrR',rownames(installed.packages()))) ) {

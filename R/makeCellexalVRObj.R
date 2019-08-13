@@ -1,6 +1,6 @@
 #' MakeCellexaVRObj creates a CellexalVR object from a matrix object.
 #' @name MakeCellexaVRObj 
-#' @aliases MakeCellexaVRObj,matrix-method
+#' @aliases MakeCellexaVRObj,dgCMatrix-method
 #' @rdname MakeCellexaVRObj-methods
 #' @docType methods
 #' @description  Creates a cellexalvr objext with the data given

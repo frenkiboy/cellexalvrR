@@ -1,3 +1,5 @@
+skip('depricated')
+
 context('VR create network')
 
 if ( is.na( match('cellexalvrR',rownames(installed.packages()))) ) {

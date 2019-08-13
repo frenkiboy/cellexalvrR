@@ -32,7 +32,7 @@ if (! file.exists( opath)) {
 	dir.create( file.path(opath, 'default_user','testSession'))
 	dir.create( file.path(opath, 'default_user','testSession', 'tables'),  recursive = TRUE)
 }
-
+#cellexalObj@outpath = opath
 export2cellexalvr(cellexalObj , opath )
 
 
@@ -49,7 +49,7 @@ old_length = 0
 if ( length(cellexalObj@userGroups) > 0 ){
 	old_length = length(cellexalObj@userGroups) -2 ## and therefore a pointless test...
 }
-cellexalObj = userGrouping(cellexalObj, file.path(ipath, 'selection0.txt') )
+cellexalObj = userGrouping(cellexalObj,normalizePath(file.path(ipath, 'selection0.txt') ))
 expect_equal( length(cellexalObj@userGroups) , old_length + 2 )
 
 cellexalObj = userGrouping(cellexalObj, file.path(opath,'..', 'selection0.txt') )

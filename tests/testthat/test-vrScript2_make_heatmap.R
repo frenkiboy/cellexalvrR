@@ -1,3 +1,4 @@
+skip('depricated')
 
 context('VR create heatmap ')
 

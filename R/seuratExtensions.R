@@ -16,7 +16,7 @@ if ( ! isGeneric('seurat2cellexalvr') ){setGeneric('seurat2cellexalvr', ## Name
 
 setMethod('seurat2cellexalvr', signature = c ('seurat'),
 	definition = function (seuratObj) {
-        strop( "Seurat support has been disabled in this version of cellexalvrR" )
+        stop( "Seurat support has been disabled in this version of cellexalvrR" )
     # cell.meta <- data.frame(Identity=as.vector(seuratObj@ident))
 
     # if (exists("Phase", where = seuratObj@meta.data) == T) {

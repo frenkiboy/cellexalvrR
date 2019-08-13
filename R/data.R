@@ -9,10 +9,11 @@
 #' @importFrom grDevices png rainbow
 #' @importFrom graphics hist
 #' @importFrom knitr kable
-#' @importFrom methods new slotNames validObject
-#' @importFrom stats cor hclust
+#' @importFrom methods new slotNames validObject .hasSlot
+#' @importFrom stats cor hclust quantile
 #' @importFrom stringr str_replace_all str_split
 #' @importFrom topGO GenTable runTest
+#' @importFrom utils packageVersion
 NULL
 
 
