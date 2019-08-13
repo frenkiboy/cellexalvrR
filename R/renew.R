@@ -26,17 +26,17 @@ setMethod('renew', signature = c ('cellexalvrR'),
 			if( isS4(x)) {
 				## OK no R6 then ;-)
 				ret = x
-				if ( ! methods::.hasSlot( x, 'version') ) {
-					if ( methods::.hasSlot( x, 'dat')) {
-							ret <- methods::new("cellexalvrR",data=x@dat,drc=x@mds,meta.cell=x@meta.cell,
-								meta.gene = x@meta.gene,  index = x@index, outpath=x@outpath)
-						}else if( ! .hasSlot( x, 'drc')) {
-							ret <- methods::new("cellexalvrR",data=Matrix::Matrix(x@data, sparse=T),drc=x@mds,
-								meta.cell=x@meta.cell,meta.gene = x@meta.gene,  index = x@index, outpath=x@outpath)
-						}else {
-							ret <- methods::new("cellexalvrR",data=Matrix::Matrix(x@data, sparse=T),drc=x@drc,
-								meta.cell=x@meta.cell,meta.gene = x@meta.gene,  index = x@index, outpath=x@outpath)
-						}
+				if ( ! .hasSlot( x, 'version') ) {
+					if ( .hasSlot( x, 'dat') & .hasSlot(x, 'mds') ) {
+						ret <- new("cellexalvrR",data=x@dat,drc=x@mds,meta.cell=x@meta.cell,meta.gene = x@meta.gene,  index = x@index)
+					}else if ( .hasSlot( x, 'data') & .hasSlot(x, 'drc')) {
+						ret <- new("cellexalvrR",data=Matrix(x@data, sparse=T),drc=x@drc,meta.cell=x@meta.cell,meta.gene = x@meta.gene,  index = x@index)
+					}else if ( .hasSlot( x, 'mds')) {	
+						ret <- new("cellexalvrR",data=Matrix(x@data, sparse=T),drc=x@mds,meta.cell=x@meta.cell,meta.gene = x@meta.gene,  index = x@index)
+					}else {
+						print ( "Sorry this need re-coding - how do we update this old object here?")
+						browser()
+					}
 					
 				}else if (x@version != as.character(utils::packageVersion("cellexalvrR"))  ) { 
 					ret <- new("cellexalvrR",data=Matrix(x@data, sparse=T),drc=x@drc,
