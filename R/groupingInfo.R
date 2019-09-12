@@ -10,7 +10,7 @@
 #' @param gname The optional group name to get info on a specific grouping (not the last)
 #' @title get information on a sample grouping
 #' @examples
-#' groupingInfo(cellexalObj, 'User.group.4')
+#' groupingInfo(cellexalObj, 'User.group.4') #function definition in file 'groupingInfo.R'
 #' @return a list with the entries 'grouping', 'order', 'drc' and 'col'
 #' @keywords groupingInfo
 #' @export groupingInfo

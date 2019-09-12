@@ -109,7 +109,7 @@ my $add;
 #my $bad = { map { $_ => 1 } qw(rm for if rownames match stop print sapply apply exists numeric c nrow ncol message names rbind cbind )}
 foreach my $fname ( @files ) {
   open ( IN, "<$path$fname") || die "I can not open the R source file $path$fname\n$!\n";
-  open ( OUT, ">$path$fname.out.R") || die "I can not create the updated R source file $path$fname.out\n$!\n";
+  open ( OUT, ">$path$fname.out") || die "I can not create the updated R source file $path$fname.out\n$!\n";
   while( <IN> ) {
     chomp();
     $add = 0;
@@ -137,7 +137,8 @@ foreach my $fname ( @files ) {
 if ( ! $debug ) {
   ## replace the originals with the changed!
   foreach my $fname ( @files ) {
-    move( "$fname.out.R", $fname )
+	  print "moving file $fname.out to $fname\n";
+	  system( "mv ../R/$fname.out  ../R/$fname");
   }
 }else {
   print "Debug mode - check the .out files in the R source folder.\n";

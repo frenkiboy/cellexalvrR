@@ -33,7 +33,7 @@ setMethod('as_cellexalvrR', signature = c ('environment'),
 	
 	if ( ! is.null(meta.genes.groups) )
 		ret@meta.gene = x$annoatation[, meta.genes.groups]
-	ret@meta.cell = make.cell.meta.from.df( x$samples[,meta.cell.groups] ,rq.fields= meta.cell.groups )
+	ret@meta.cell = make.cell.meta.from.df( x$samples[,meta.cell.groups] ,rq.fields= meta.cell.groups ) #function definition in file 'make.cell.meta.from.df.R'
 	rownames(ret@meta.cell) = colnames( ret@data )
 	t = data.frame(lapply( 
 		x$usedObj$userGroups, 
@@ -79,12 +79,12 @@ setMethod('as_cellexalvrR', signature = c ('character'),
 	
 	if ( length(grep('.h5ad$',x)) ==1 ) {
 		x= hdf5r::h5file(x)
-		as_cellexalvrR( x, meta.cell.groups=meta.cell.groups, 
+		as_cellexalvrR( x, meta.cell.groups=meta.cell.groups,  #function definition in file 'as_cellexalvrR.R'
 			meta.genes.groups = meta.genes.groups, userGroups= userGroups, outpath=outpath, 
 			specie = specie)
 	}else if( length(grep('.loom$',x)) ==1 ) {
 		x <- loomR::connect(filename = x, mode = "r")
-		as_cellexalvrR( x, meta.cell.groups=meta.cell.groups, 
+		as_cellexalvrR( x, meta.cell.groups=meta.cell.groups,  #function definition in file 'as_cellexalvrR.R'
 			meta.genes.groups = meta.genes.groups, userGroups= userGroups, outpath=outpath, 
 			specie = specie)
 	}
@@ -125,7 +125,7 @@ setMethod('as_cellexalvrR', signature = c ('loom'),
   ))
 	}
 	print ( "reading cell information" )
-	ret@usedObj$original_meta.cell = obs = H5Anno2df(x,'col_attrs', 'cell_names', onlyStrings=TRUE )
+	ret@usedObj$original_meta.cell = obs = H5Anno2df(x,'col_attrs', 'cell_names', onlyStrings=TRUE ) #function definition in file 'as_cellexalvrR.R'
   	## now we check which ones the user wanted and throw an error if we did not get anything
   	if ( is.null(meta.cell.groups)){
   		cat( paste(
@@ -182,13 +182,13 @@ setMethod('as_cellexalvrR', signature = c ('loom'),
   		dat = Matrix::Matrix(dat, sparse=T)
   	}
   	print ( "reading feature data")
-  	ret@usedObj$original_meta.features = meta.features = H5Anno2df(x, 'row_attrs', 'gene_names', onlyStrings=TRUE )
+  	ret@usedObj$original_meta.features = meta.features = H5Anno2df(x, 'row_attrs', 'gene_names', onlyStrings=TRUE ) #function definition in file 'as_cellexalvrR.R'
 
   	dat = Matrix::t(dat)
   	rownames(dat) = rownames( meta.features)
   	colnames(dat) = rownames(obs)
 	ret@data = dat
-	ret = addCellMeta2cellexalvr(ret, makeCellMetaFromDataframe(obs, rq.fields= colnames(obs)))
+	ret = addCellMeta2cellexalvr(ret, makeCellMetaFromDataframe(obs, rq.fields= colnames(obs))) #function definition in file 'addElements.R'
 	ret@meta.gene = as.matrix(meta.features[match( rownames(ret@data), rownames(meta.features) ),])
 
 	rm( dat)
@@ -338,7 +338,7 @@ setMethod('as_cellexalvrR', signature = c ('H5File'),
 	## obtain the data slot information
 	ret@data = dat
 #	browser()
-	ret = addCellMeta2cellexalvr(ret, make.cell.meta.from.df(data.frame(obs), rq.fields= colnames(obs)))
+	ret = addCellMeta2cellexalvr(ret, make.cell.meta.from.df(data.frame(obs), rq.fields= colnames(obs))) #function definition in file 'addElements.R'
 	ret@meta.gene = as.matrix(meta.features[match( rownames(ret@data), rownames(meta.features) ),])
 
 	rm( dat )
@@ -456,7 +456,7 @@ setMethod('H5Anno2df', signature = c ('cellexalvrR'),
   		names(col_uniq) = colnames( obs )
   		## most likely cell names column
   		if ( ! is.na(match(namecol, colnames(obs)) )) {
-			rownames(obs) =  forceAbsoluteUniqueSample (
+			rownames(obs) =  forceAbsoluteUniqueSample ( #function definition in file 'as_cellexalvrR.R'
 				as.vector(obs[, namecol]) )
   		}else {
   			## now I need to check for strings...
@@ -472,7 +472,7 @@ setMethod('H5Anno2df', signature = c ('cellexalvrR'),
   			# if ( slotName == 'row_attrs'){
   			# 	browser()
   			# }
-  			rownames(obs) =  forceAbsoluteUniqueSample (
+  			rownames(obs) =  forceAbsoluteUniqueSample ( #function definition in file 'as_cellexalvrR.R'
   				as.vector(obs[, names(OK)[which(OK == max(OK))[1]]]) )
   		}
   		if ( onlyStrings ) {
