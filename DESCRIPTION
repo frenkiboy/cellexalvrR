@@ -45,6 +45,8 @@ Imports:
 	utils,
 	propr
 Remotes: 
+	hhoeflin/hdf5r
+	mojaveazure/loomR
 	stela2502/FastWilcoxTest
 License: GPL-3
 Encoding: UTF-8
