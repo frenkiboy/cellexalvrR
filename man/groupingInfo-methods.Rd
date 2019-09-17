@@ -21,6 +21,6 @@ groupingInfo collects all information about one grouping from
 the cellexalvrR internals and returns them as a list.
 }
 \examples{
-groupingInfo(cellexalObj, 'User.group.4')
+groupingInfo(cellexalObj, 'User.group.4') #function definition in file 'groupingInfo.R'
 }
 \keyword{groupingInfo}
