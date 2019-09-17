@@ -3,12 +3,14 @@
 \docType{methods}
 \name{as_cellexalvrR,H5File-method}
 \alias{as_cellexalvrR,H5File-method}
-\title{Cast an AnnData object to a cellexalvrR object}
+\title{Cast a loom object to a cellexalvrR object
+Cast an AnnData object to a cellexalvrR object}
 \usage{
 \S4method{as_cellexalvrR}{H5File}(x, meta.cell.groups = NULL,
   meta.genes.groups = NULL, userGroups = NULL, outpath = getwd(),
   specie)
 }
 \description{
+Cast a loom object to a cellexalvrR object
 Cast an AnnData object to a cellexalvrR object
 }

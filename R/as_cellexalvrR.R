@@ -94,143 +94,143 @@ setMethod('as_cellexalvrR', signature = c ('character'),
 } )
 
 #' Cast a loom object to a cellexalvrR object
-setMethod('as_cellexalvrR', signature = c ('loom'),
-	definition = function ( x, meta.cell.groups=NULL, meta.genes.groups = NULL, userGroups=NULL, outpath=getwd(), specie ) {
-		## code adapted from Seurat::ReadH5AD.H5File() 2019/08/22
+# setMethod('as_cellexalvrR', signature = c ('loom'),
+# 	definition = function ( x, meta.cell.groups=NULL, meta.genes.groups = NULL, userGroups=NULL, outpath=getwd(), specie ) {
+# 		## code adapted from Seurat::ReadH5AD.H5File() 2019/08/22
 	
-	require( 'hdf5r' )
+# 	require( 'hdf5r' )
 
-	ret = methods::new('cellexalvrR')
-	ret@specie = specie
+# 	ret = methods::new('cellexalvrR')
+# 	ret@specie = specie
 
-	as.sparse <- function(x, ...) {
-  for (i in c('data', 'indices', 'indptr')) {
-    if (!x$exists(name = i) || !is(object = x[[i]], class2 = 'H5D')) {
-      stop("Invalid H5Group specification for a sparse matrix, missing dataset ", i)
-    }
-  }
-  if ('h5sparse_shape' %in% hdf5r::h5attr_names(x = x)) {
-    return(Matrix::sparseMatrix(
-      i = x[['indices']][] + 1,
-      p = x[['indptr']][],
-      x = x[['data']][],
-      dims = rev(x = hdf5r::h5attr(x = x, which = 'h5sparse_shape'))
-    ))
-  }
-  return(Matrix::sparseMatrix(
-    i = x[['indices']][] + 1,
-    p = x[['indptr']][],
-    x = x[['data']][],
-    sparse=T
-  ))
-	}
-	print ( "reading cell information" )
-	ret@usedObj$original_meta.cell = obs = H5Anno2df(x,'col_attrs', 'cell_names', onlyStrings=TRUE ) #function definition in file 'as_cellexalvrR.R'
-  	## now we check which ones the user wanted and throw an error if we did not get anything
-  	if ( is.null(meta.cell.groups)){
-  		cat( paste(
-  			"meta.cell.groups is missing", 
-  			"Please select some from the list:", 
-  			paste( sep="","c('", paste(colnames(obs), collapse="', '" ),"')"),sep='\n','' ) )
-  		stop("Please give me a meta.cell.groups vector!")
-  	}else {
-  		if ( length( which(is.na( match(meta.cell.groups, colnames(obs)) )) ) > 0 ){
-  			bad = which(is.na( match(meta.cell.groups, colnames(obs) )))
-  			cat( paste( sep="\n", 
-  				"I could not find the sample columns", 
-  				paste(collapse=", ",meta.cell.groups[bad]),
-  				"But I have these:",
-  				 paste( sep="", "c('",paste( colnames(obs), collapse="', '" ),"')")
-  				,''))
-  			stop("please select existsing cell annotation columns!")
-  		}
-  		if ( length(meta.cell.groups) == 1){
-  			obs = matrix(obs[, meta.cell.groups], ncol=length(meta.cell.groups))
-  		} else {
-  			obs =obs[, meta.cell.groups]
-  		}
-  	}
-  	# col_complexity = apply( obs, 2, function(x) { length( unique( as.vector(x) ) ) })
-  	# names( col_complexity) = colnames(obs)
-  	# obs = matrix(obs)
-  	# ## Get rid of all columns that are too complex for cellexalVR
-  	# names( col_complexity) = colnames( obs )
-  	# if ( length(which( col_complexity > 50)) > 0 ){
-  	# 	if ( length(which( col_complexity < 51)) <2 ) {
-  	# 		## problems with the matrix reduced to a vector/list
-  	# 		tmp = obs
-  	# 		obs = matrix(obs[, - which( col_complexity > 50)])
-  	# 		rownames( obs) = rownames(obs)
-  	# 	}else {
-  	# 		obs = obs[, - which( col_complexity > 50)]
-  	# 	}
-  	# }
-  	# for ( i in length(col_complexity):1){
-  	# 	if (col_complexity[i] > 50 ){
-  	# 		obs = obs[ ,-i]
- 		# }
-  	# }
-  	print ( "reading data" )
-  	if (is(object = x[['matrix']], class2 = 'H5Group')) {
-    	dat <- as.sparse(x = x[['matrix']])
-  	} else {
-   		dat <- x[['matrix']][, ]
-  	}
-  	# x will be an S3 matrix if X was scaled, otherwise will be a dgCMatrix
-  	if (is.matrix(x = dat)) {
-  		## the loom files seam to store all data as matrix and not as sparse matrix?!
-  		dat = Matrix::Matrix(dat, sparse=T)
-  	}
-  	print ( "reading feature data")
-  	ret@usedObj$original_meta.features = meta.features = H5Anno2df(x, 'row_attrs', 'gene_names', onlyStrings=TRUE ) #function definition in file 'as_cellexalvrR.R'
+# 	as.sparse <- function(x, ...) {
+#   for (i in c('data', 'indices', 'indptr')) {
+#     if (!x$exists(name = i) || !is(object = x[[i]], class2 = 'H5D')) {
+#       stop("Invalid H5Group specification for a sparse matrix, missing dataset ", i)
+#     }
+#   }
+#   if ('h5sparse_shape' %in% hdf5r::h5attr_names(x = x)) {
+#     return(Matrix::sparseMatrix(
+#       i = x[['indices']][] + 1,
+#       p = x[['indptr']][],
+#       x = x[['data']][],
+#       dims = rev(x = hdf5r::h5attr(x = x, which = 'h5sparse_shape'))
+#     ))
+#   }
+#   return(Matrix::sparseMatrix(
+#     i = x[['indices']][] + 1,
+#     p = x[['indptr']][],
+#     x = x[['data']][],
+#     sparse=T
+#   ))
+# 	}
+# 	print ( "reading cell information" )
+# 	ret@usedObj$original_meta.cell = obs = H5Anno2df(x,'col_attrs', 'cell_names', onlyStrings=TRUE ) #function definition in file 'as_cellexalvrR.R'
+#   	## now we check which ones the user wanted and throw an error if we did not get anything
+#   	if ( is.null(meta.cell.groups)){
+#   		cat( paste(
+#   			"meta.cell.groups is missing", 
+#   			"Please select some from the list:", 
+#   			paste( sep="","c('", paste(colnames(obs), collapse="', '" ),"')"),sep='\n','' ) )
+#   		stop("Please give me a meta.cell.groups vector!")
+#   	}else {
+#   		if ( length( which(is.na( match(meta.cell.groups, colnames(obs)) )) ) > 0 ){
+#   			bad = which(is.na( match(meta.cell.groups, colnames(obs) )))
+#   			cat( paste( sep="\n", 
+#   				"I could not find the sample columns", 
+#   				paste(collapse=", ",meta.cell.groups[bad]),
+#   				"But I have these:",
+#   				 paste( sep="", "c('",paste( colnames(obs), collapse="', '" ),"')")
+#   				,''))
+#   			stop("please select existsing cell annotation columns!")
+#   		}
+#   		if ( length(meta.cell.groups) == 1){
+#   			obs = matrix(obs[, meta.cell.groups], ncol=length(meta.cell.groups))
+#   		} else {
+#   			obs =obs[, meta.cell.groups]
+#   		}
+#   	}
+#   	# col_complexity = apply( obs, 2, function(x) { length( unique( as.vector(x) ) ) })
+#   	# names( col_complexity) = colnames(obs)
+#   	# obs = matrix(obs)
+#   	# ## Get rid of all columns that are too complex for cellexalVR
+#   	# names( col_complexity) = colnames( obs )
+#   	# if ( length(which( col_complexity > 50)) > 0 ){
+#   	# 	if ( length(which( col_complexity < 51)) <2 ) {
+#   	# 		## problems with the matrix reduced to a vector/list
+#   	# 		tmp = obs
+#   	# 		obs = matrix(obs[, - which( col_complexity > 50)])
+#   	# 		rownames( obs) = rownames(obs)
+#   	# 	}else {
+#   	# 		obs = obs[, - which( col_complexity > 50)]
+#   	# 	}
+#   	# }
+#   	# for ( i in length(col_complexity):1){
+#   	# 	if (col_complexity[i] > 50 ){
+#   	# 		obs = obs[ ,-i]
+#  		# }
+#   	# }
+#   	print ( "reading data" )
+#   	if (is(object = x[['matrix']], class2 = 'H5Group')) {
+#     	dat <- as.sparse(x = x[['matrix']])
+#   	} else {
+#    		dat <- x[['matrix']][, ]
+#   	}
+#   	# x will be an S3 matrix if X was scaled, otherwise will be a dgCMatrix
+#   	if (is.matrix(x = dat)) {
+#   		## the loom files seam to store all data as matrix and not as sparse matrix?!
+#   		dat = Matrix::Matrix(dat, sparse=T)
+#   	}
+#   	print ( "reading feature data")
+#   	ret@usedObj$original_meta.features = meta.features = H5Anno2df(x, 'row_attrs', 'gene_names', onlyStrings=TRUE ) #function definition in file 'as_cellexalvrR.R'
 
-  	dat = Matrix::t(dat)
-  	rownames(dat) = rownames( meta.features)
-  	colnames(dat) = rownames(obs)
-	ret@data = dat
-	ret = addCellMeta2cellexalvr(ret, makeCellMetaFromDataframe(obs, rq.fields= colnames(obs))) #function definition in file 'addElements.R'
-	ret@meta.gene = as.matrix(meta.features[match( rownames(ret@data), rownames(meta.features) ),])
+#   	dat = Matrix::t(dat)
+#   	rownames(dat) = rownames( meta.features)
+#   	colnames(dat) = rownames(obs)
+# 	ret@data = dat
+# 	ret = addCellMeta2cellexalvr(ret, makeCellMetaFromDataframe(obs, rq.fields= colnames(obs))) #function definition in file 'addElements.R'
+# 	ret@meta.gene = as.matrix(meta.features[match( rownames(ret@data), rownames(meta.features) ),])
 
-	rm( dat)
-	rm( meta.features)
-	rm(obs)
+# 	rm( dat)
+# 	rm( meta.features)
+# 	rm(obs)
 
-	## The drc's are hidden in the obj
-	interest <- list( 
-		'unknown' = c('_X', '_Y', '_Z'), 
-		'tSNE' = c('_tSNE1', '_tSNE2', '_tSNE3'), 
-		'PCA' = c('_PC1', '_PC2', '_PC3') 
-	)
-	print ("reading drc data")
-	dr = lapply( interest, function(a) { 
-		d=NULL
+# 	## The drc's are hidden in the obj
+# 	interest <- list( 
+# 		'unknown' = c('_X', '_Y', '_Z'), 
+# 		'tSNE' = c('_tSNE1', '_tSNE2', '_tSNE3'), 
+# 		'PCA' = c('_PC1', '_PC2', '_PC3') 
+# 	)
+# 	print ("reading drc data")
+# 	dr = lapply( interest, function(a) { 
+# 		d=NULL
 		
-		if ( var(ret@usedObj$original_meta.cell[,a[1]]) + var (ret@usedObj$original_meta.cell[,a[2]]) != 0 ){
+# 		if ( var(ret@usedObj$original_meta.cell[,a[1]]) + var (ret@usedObj$original_meta.cell[,a[2]]) != 0 ){
 
-			## the third column is not defined in the loom structures. Hence I simply do not check for it here
-			d= cbind(as.numeric(as.vector(ret@usedObj$original_meta.cell[,a[1]])), as.numeric(as.vector(ret@usedObj$original_meta.cell[,a[2]])), rep(0,nrow(ret@meta.cell)) )
-			colnames(d) = a
-			rownames(d) = rownames(ret@meta.cell)
-		}
-		d
-		} )
+# 			## the third column is not defined in the loom structures. Hence I simply do not check for it here
+# 			d= cbind(as.numeric(as.vector(ret@usedObj$original_meta.cell[,a[1]])), as.numeric(as.vector(ret@usedObj$original_meta.cell[,a[2]])), rep(0,nrow(ret@meta.cell)) )
+# 			colnames(d) = a
+# 			rownames(d) = rownames(ret@meta.cell)
+# 		}
+# 		d
+# 		} )
 
-	for( n in names(dr) ) {
-		if ( ! is.null(dr[[n]])) {
-			ret@drc[[n]] = dr[[n]]
-		}
-	}
+# 	for( n in names(dr) ) {
+# 		if ( ! is.null(dr[[n]])) {
+# 			ret@drc[[n]] = dr[[n]]
+# 		}
+# 	}
 
 
-    if ( length(names(ret@drc)) == 0) {
-    	stop( "No usable drc's found in the loomR object")
-    }
+#     if ( length(names(ret@drc)) == 0) {
+#     	stop( "No usable drc's found in the loomR object")
+#     }
 
-    ret@specie = specie
-    ret@outpath = outpath
-    #print ( "Please take care colnames and rownames have not been set!" )
-    invisible(ret)
-} )
+#     ret@specie = specie
+#     ret@outpath = outpath
+#     #print ( "Please take care colnames and rownames have not been set!" )
+#     invisible(ret)
+# } )
 
 #' Cast an AnnData object to a cellexalvrR object
 setMethod('as_cellexalvrR', signature = c ('H5File'),
