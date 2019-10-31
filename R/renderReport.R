@@ -58,9 +58,12 @@ setMethod('renderReport', signature = c ('cellexalvrR'),
 	#bookdown::render_book( input=files, , 
 	setwd( oldwd )
 	
-	expected_outfile = file.path(sessionPath, '..', paste(cellexalObj@usedObj$sessionName, sep='', '.html'))
+	expected_outfile = file.path(sessionPath, '..', paste('session-log-for-session-',cellexalObj@usedObj$sessionName, sep='', '.html'))
 	if ( file.exists( expected_outfile )){
 		cellexalObj@usedObj$sessionPath = cellexalObj@usedObj$sessionRmdFiles = cellexalObj@usedObj$sessionName = NULL
+		## we also should delete the single reports created earlier - if there are any,
+		lapply( list.files( file.path(sessionPath,'..') , 
+		full.names = TRUE, recursive = TRUE), function(n) { if ( length(grep('[0-9][0-9]*_', n)) !=0){unlink(n)} } )
 		savePart(cellexalObj,part = 'usedObj' ) #function definition in file 'integrateParts.R'
 	}else {
 		print ( paste( "some error has occured - output ",expected_outfile," file was not created!" ))
